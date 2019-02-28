@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{67B44FCC-B749-491C-9811-85E96F744673}</ProjectGuid>
+    <ProjectGuid>{D8651903-69E0-484D-B434-8280D41E11E0}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ComparingFileContents</RootNamespace>
-    <AssemblyName>ComparingFileContents</AssemblyName>
+    <RootNamespace>TestPersonLib</RootNamespace>
+    <AssemblyName>TestPersonLib</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -53,6 +53,10 @@
     <ProjectReference Include="..\NotepadContentComparer\NotepadComparerLib.csproj">
       <Project>{64c673ac-a431-42a1-9c93-49f6fd3f53d1}</Project>
       <Name>NotepadComparerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Person\PersonLib.csproj">
+      <Project>{84df2397-fe62-4c42-9c6b-069ad30d7788}</Project>
+      <Name>PersonLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
