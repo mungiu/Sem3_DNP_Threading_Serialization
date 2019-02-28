@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NotepadContentComparer\NotepadComparerLib.csproj">
+    <ProjectReference Include="..\NotepadContentComparer\NotepadReadWriteLibrary.csproj">
       <Project>{64c673ac-a431-42a1-9c93-49f6fd3f53d1}</Project>
-      <Name>NotepadComparerLib</Name>
+      <Name>NotepadReadWriteLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\Person\PersonLib.csproj">
       <Project>{84df2397-fe62-4c42-9c6b-069ad30d7788}</Project>

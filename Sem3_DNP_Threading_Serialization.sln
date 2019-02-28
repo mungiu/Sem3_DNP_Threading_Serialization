@@ -5,12 +5,11 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComparingFileContents", "ComparingFileContents\ComparingFileContents.csproj", "{67B44FCC-B749-491C-9811-85E96F744673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotepadComparerLib", "NotepadContentComparer\NotepadComparerLib.csproj", "{64C673AC-A431-42A1-9C93-49F6FD3F53D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotepadReadWriteLibrary", "NotepadContentComparer\NotepadReadWriteLibrary.csproj", "{64C673AC-A431-42A1-9C93-49F6FD3F53D1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05E6144F-B2A4-4077-85D2-390D77896EEC}"
 	ProjectSection(SolutionItems) = preProject
-		idiot1.txt = idiot1.txt
-		idiot2.txt = idiot2.txt
+		Path.txt = Path.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonLib", "Person\PersonLib.csproj", "{84DF2397-FE62-4C42-9C6B-069AD30D7788}"
