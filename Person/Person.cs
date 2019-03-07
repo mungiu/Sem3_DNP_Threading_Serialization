@@ -11,13 +11,16 @@ namespace PersonLib
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int Ssb { get; set; }
+        public int Ssn { get; set; }
 
-        public Person(string firstName, string lastName, int ssb)
+        public override bool Equals(Object obj)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Ssb = ssb;
+            if (this.GetType() != obj.GetType())
+                return false;
+            else if (this.Ssn != ((Person)obj).Ssn)
+                return false;
+            else
+                return true;
         }
     }
 }

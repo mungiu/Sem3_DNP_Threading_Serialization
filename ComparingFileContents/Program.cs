@@ -18,8 +18,8 @@ namespace ComparingFileContents
             // string fileName2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "thisisnotanidiot.txt");
             string fileName1 = @"C:\Users\andre\source\repos\Sem3_DNP_Threading\idiot1.txt";
             string fileName2 = @"C:\Users\andre\source\repos\Sem3_DNP_Threading\idiot2.txt";
-            NotepadReadWriteLibrary.Reader reader = new NotepadReadWriteLibrary.Reader(fileName1);
-            NotepadReadWriteLibrary.Reader reader1 = new NotepadReadWriteLibrary.Reader(fileName2);
+            ReadWriteLibrary.Reader reader = new ReadWriteLibrary.Reader(fileName1);
+            ReadWriteLibrary.Reader reader1 = new ReadWriteLibrary.Reader(fileName2);
 
 
             Thread t0 = new Thread(reader.StringRead);

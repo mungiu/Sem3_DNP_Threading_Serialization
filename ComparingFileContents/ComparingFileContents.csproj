@@ -49,11 +49,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NotepadContentComparer\NotepadReadWriteLibrary.csproj">
-      <Project>{64c673ac-a431-42a1-9c93-49f6fd3f53d1}</Project>
-      <Name>NotepadReadWriteLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

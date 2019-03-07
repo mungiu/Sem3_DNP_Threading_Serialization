@@ -7,70 +7,131 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Soap;
+using System.Security.AccessControl;
+using PersonLib;
+using System.Xml.Serialization;
 
 namespace TestPersonLib
 {
     class Program
     {
-        private static Stream binaryStream1;
-        private static Stream binaryStream2;
-        private static Stream outputBinaryStream1;
-        private static Stream outputBinaryStream2;
-        private static byte[] buffer = new byte[256];
-        private static AsyncCallback callback;
+        // If path not specified file create in current PROJECT directory (not Solution directory): 
+        // <Solution_path> \ <Project_path> \ bin \ Debug \ <fileName>
+        private static string fileName1;
+        private static string fileName2;
+        private static PersonLib.Person person1;
+        private static PersonLib.Person person2;
+
+
 
         static void Main(string[] args)
         {
-            string filePath1 = @"C:\Users\Home\Source\Repos\mungiu\Sem3_DNP_Threading_Serialization\Idiot1.txt";
-            string filePath2 = @"C:\Users\Home\Source\Repos\mungiu\Sem3_DNP_Threading_Serialization\Idiot2.txt";
+            fileName1 = @"Person1.txt";
+            fileName2 = @"Person2.txt";
+            person1 = new PersonLib.Person();
+            person2 = new PersonLib.Person();
 
-            PersonLib.Person person1 = new PersonLib.Person("smartfirstname", "smartsurname", 123);
-            PersonLib.Person person2 = new PersonLib.Person("smartfirstname1", "smartsurname1", 1234);
+            person1.FirstName = "one";
+            person1.LastName = "two";
+            person1.Ssn = 123;
 
-            // calling beginStream with callback delegate
-            binaryStream1 = new FileStream(filePath1, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-            binaryStream2 = new FileStream(filePath2, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            person2.FirstName = "one";
+            person2.LastName = "two";
+            person2.Ssn = 123;
 
-            
-            // callback = new AsyncCallback(OnCompletedRead);
+            /// USING BINARY FORMATTER
+            ///
+            IFormatter binaryFormatter = new BinaryFormatter();
+            Stream writeStream;
+            Stream readStream;
+
+            // SERIALIZING
+            writeStream = new FileStream(fileName1, FileMode.Create, FileAccess.Write, FileShare.None);
+            binaryFormatter.Serialize(writeStream, person1);
+            writeStream.Close();
+
+            writeStream = new FileStream(fileName2, FileMode.Create, FileAccess.Write, FileShare.None);
+            binaryFormatter.Serialize(writeStream, person2);
+            writeStream.Close();
+
+            // DESERIALIZING
+            readStream = new FileStream(fileName1, FileMode.Open, FileAccess.Read, FileShare.Read);
+            PersonLib.Person _person1 = (PersonLib.Person)binaryFormatter.Deserialize(readStream);
+            readStream.Close();
+
+            readStream = new FileStream(fileName2, FileMode.Open, FileAccess.Read, FileShare.Read);
+            PersonLib.Person _person2 = (PersonLib.Person)binaryFormatter.Deserialize(readStream);
+            readStream.Close();
 
 
-            // WRITING TO BIN FILES
-            SerializeAndWritePersonToBinFiles((FileStream)binaryStream1, (FileStream)binaryStream2, person1, person2);
-            // READING & COMPARING BIN FILES
-            ComparePersonsFromBinFiles(null, null, filePath1, filePath2);
+            Console.WriteLine(_person1.Equals(_person2));
 
 
+            /// USING SOAP FORMATTER
+            /// NOTE: SoapFormatter serializes the root object and all of its children
+            /// 
+            IFormatter soapFormatter = new SoapFormatter();
 
-            binaryStream1.Close();
-            binaryStream2.Close();
+            // SERIALIZING
+            writeStream = new FileStream(fileName1, FileMode.Create, FileAccess.Write, FileShare.None);
+            soapFormatter.Serialize(writeStream, person1);
+            writeStream.Close();
+
+            writeStream = new FileStream(fileName2, FileMode.Create, FileAccess.Write, FileShare.None);
+            soapFormatter.Serialize(writeStream, person2);
+            writeStream.Close();
+
+            // DESERIALIZING
+            readStream = new FileStream(fileName1, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _person1 = (PersonLib.Person)soapFormatter.Deserialize(readStream);
+            readStream.Close();
+
+            readStream = new FileStream(fileName2, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _person2 = (PersonLib.Person)soapFormatter.Deserialize(readStream);
+            readStream.Close();
+
+            Console.WriteLine(_person1.Equals(_person2));
+
+
+            /// USING XML SERIALIZER
+            /// PROs: 
+            /// * Generally speaking it offers much more flexibility in terms of what should be serialized and how it should be serialized.
+            /// * If a property or field returns a complex object (such as an array or a class instance), 
+            /// the XmlSerializer converts it to an element nested within the main XML document. 
+            /// For example, the first class in the following code example returns an instance of the second class.
+            /// 
+            /// CONs:
+            /// Can ONLY seialize objects that have a parameterless constructor.
+            /// 
+
+            Type[] extraTypes = new Type[2];
+            extraTypes[0] = typeof(string);
+            extraTypes[1] = typeof(int);
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(PersonLib.Person), extraTypes);
+
+            // SERIALIZING
+            writeStream = new FileStream(fileName1, FileMode.Create, FileAccess.Write, FileShare.None);
+            xmlSerializer.Serialize(writeStream, person1);
+            writeStream.Close();
+
+            writeStream = new FileStream(fileName2, FileMode.Create, FileAccess.Write, FileShare.None);
+            xmlSerializer.Serialize(writeStream, person2);
+            writeStream.Close();
+
+            // DESERIALIZING
+            readStream = new FileStream(fileName1, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _person1 = (PersonLib.Person)xmlSerializer.Deserialize(readStream);
+            readStream.Close();
+
+            readStream = new FileStream(fileName2, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _person2 = (PersonLib.Person)xmlSerializer.Deserialize(readStream);
+            readStream.Close();
+
+            Console.WriteLine(_person1.Equals(_person2));
+
             Console.ReadKey();
-        }
-
-        public static void OnCompletedRead(IAsyncResult result)
-        {
-            int bytesRead1 = binaryStream1.EndRead(result);
-            int bytesRead2 = binaryStream2.EndRead(result);
-        }
-
-        public static bool ComparePersonsFromBinFiles(FileStream fileStream1, FileStream fileStream2, string filePath1, string filePath2)
-        {
-            NotepadReadWriteLibrary.Reader reader1 = new NotepadReadWriteLibrary.Reader(filePath1);
-            NotepadReadWriteLibrary.Reader reader2 = new NotepadReadWriteLibrary.Reader(filePath2);
-
-            PersonLib.Person _person1 = reader1.BinRead((FileStream) binaryStream1);
-            PersonLib.Person _person2 = reader2.BinRead((FileStream) binaryStream2);
-
-            return Comparer<PersonLib.Person>.Equals(_person1, _person2);
-        }
-
-        public static void SerializeAndWritePersonToBinFiles(FileStream fileStream1, FileStream fileStream2, PersonLib.Person person1, PersonLib.Person person2)
-        {
-            NotepadReadWriteLibrary.Writer _writer1 = new NotepadReadWriteLibrary.Writer(fileStream1, person1);
-            NotepadReadWriteLibrary.Writer _writer2 = new NotepadReadWriteLibrary.Writer(fileStream2, person2);
-
-            _writer1.BinWrite();
-            _writer2.BinWrite();
         }
     }
 }

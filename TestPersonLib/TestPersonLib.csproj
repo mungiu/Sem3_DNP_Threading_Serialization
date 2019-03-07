@@ -35,6 +35,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,10 +52,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NotepadContentComparer\NotepadReadWriteLibrary.csproj">
-      <Project>{64c673ac-a431-42a1-9c93-49f6fd3f53d1}</Project>
-      <Name>NotepadReadWriteLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Person\PersonLib.csproj">
       <Project>{84df2397-fe62-4c42-9c6b-069ad30d7788}</Project>
       <Name>PersonLib</Name>

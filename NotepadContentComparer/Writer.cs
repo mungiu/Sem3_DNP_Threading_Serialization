@@ -4,26 +4,25 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Soap;
 using System.Text;
 using System.Threading.Tasks;
 using PersonLib;
 
-namespace NotepadReadWriteLibrary
+namespace ReadWriteLibrary
 {
     public class Writer
     {
-        public FileStream FileStream { get; set; }
-        public Person Person { get; set; }
+        SoapFormatter soapFormatter;
 
-        public Writer(FileStream fileStream, PersonLib.Person person) { FileStream = fileStream; Person = person; }
-
-
-        public void BinWrite()
+        public Writer()
         {
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(FileStream, Person);
+            soapFormatter = new SoapFormatter();
+        }
 
-            FileStream.Close();
+        public void BinWrite(FileStream fileStream, PersonLib.Person person)
+        {
+            soapFormatter.Serialize(fileStream, person);
         }
     }
 }
